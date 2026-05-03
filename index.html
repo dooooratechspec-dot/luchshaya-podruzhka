@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Женский Клуб - Уютный Сад</title>
+    <!-- Шрифты: Рукописный Caveat и округлый Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Обновленная палитра: Лаванда + Небо + Пион */
+            --bg-color: #F9F7FF; /* Очень светлый лавандовый оттенок */
+            --card-bg: #FFFFFF;
+            --primary-pink: #FFB7C5; /* Сакура */
+            --deep-pink: #D63384;   /* Акцент пиона */
+            --soft-lavender: #E6E6FA; /* Лаванда */
+            --sky-blue: #E0F7FA;      /* Небесно-голубой */
+            --text-main: #5D4A52;
+            --text-hand: #6A4C93;     /* Темно-лавандовый для заголовков */
+            --success: #A8E6CF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            /* Мягкий градиент фона */
+            background-image: linear-gradient(120deg, #fdfbfd 0%, #f3eaff 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden; /* Чтобы цветы не создавали прокрутку */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            position: relative;
+            z-index: 2; /* Контент выше цветов */
+        }
+
+        /* --- ОТРИСОВКА ЦВЕТОВ (SVG) --- */
+        .flower-bg {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+            animation: breathe 6s infinite ease-in-out;
+        }
+
+        /* Лавандовый пион слева вверху */
+        .flower-lavender-1 {
+            top: -20px;
+            left: -40px;
+            width: 250px;
+            transform: rotate(-15deg);
+        }
+
+        /* Голубой пион справа внизу */
+        .flower-blue-1 {
+            bottom: -30px;
+            right: -50px;
+            width: 300px;
+            transform: rotate(15deg);
+            opacity: 0.5;
+        }
+
+        /* Маленький цветок справа вверху */
+        .flower-mix-1 {
+            top: 100px;
+            right: -20px;
+            width: 150px;
+            opacity: 0.4;
+            animation-delay: 2s;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(var(--r, 0deg)); }
+            50% { transform: scale(1.05) rotate(calc(var(--r, 0deg) + 2deg)); }
+        }
+
+        /* Анимация падающих лепестков */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .petal {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 10px 0;
+            opacity: 0.6;
+            animation: float 8s infinite linear;
+            z-index: 1;
+        }
+
+        /* --- ТИПОГРАФИКА И ЭЛЕМЕНТЫ --- */
+        h1 {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--text-hand);
+            text-align: center;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #887A95;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(106, 76, 147, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid #EDE6F5;
+            position: relative;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .highlight {
+            color: var(--deep-pink);
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .widget {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(230, 230, 250, 0.5);
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(106, 76, 147, 0.15);
+            border-color: var(--soft-lavender);
+        }
+
+        .widget-icon {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .widget-title {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: var(--text-hand);
+            margin: 0;
+        }
+
+        .widget-value {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%); /* Градиент Лаванда-Голубой */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(142, 197, 252, 0.4);
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(142, 197, 252, 0.6);
+            filter: brightness(1.05);
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid #fff;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: var(--text-hand);
+        }
+
+        .progress-bar {
+            height: 14px;
+            background: #F0EBF8;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #A8E6CF, #8EC5FC);
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        /* Блик на прогресс баре */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ФОНОВЫЕ ЦВЕТЫ (SVG ОТРИСОВКА) -->
+    
+    <!-- Лавандовый Пион (Слева сверху) -->
+    <svg class="flower-bg flower-lavender-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="--r: -15deg">
+        <defs>
+            <radialGradient id="gradLavender" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:#F3E5F5;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#CE93D8;stop-opacity:0.8" />
+            </radialGradient>
+        </defs>
+        <!-- Лепестки -->
+        <circle cx="100" cy="100" r="40" fill="url(#gradLavender)" opacity="0.9"/>
+        <circle cx="70" cy="80" r="35" fill="url(#gradLavender)" opacity="0.8"/>
+        <circle cx="130" cy="80" r="35" fill="url(#gradLavender)" opacity="0.8"/>
+        <circle cx="60" cy="120" r="38" fill="url(#gradLavender)" opacity="0.8"/>
+        <circle cx="140" cy="120" r="38" fill="url(#gradLavender)" opacity="0.8"/>
+        <circle cx="100" cy="140" r="35" fill="url(#gradLavender)" opacity="0.9"/>
+        <!-- Центр -->
+        <circle cx="100" cy="100" r="15" fill="#E1BEE7" opacity="0.6"/>
+    </svg>
+
+    <!-- Небесно-Голубой Пион (Справа снизу) -->
+    <svg class="flower-bg flower-blue-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="--r: 15deg">
+        <defs>
+            <radialGradient id="gradBlue" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:#E1F5FE;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#81D4FA;stop-opacity:0.8" />
+            </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="45" fill="url(#gradBlue)" opacity="0.9"/>
+        <circle cx="65" cy="75" r="40" fill="url(#gradBlue)" opacity="0.8"/>
+        <circle cx="135" cy="75" r="40" fill="url(#gradBlue)" opacity="0.8"/>
+        <circle cx="55" cy="130" r="42" fill="url(#gradBlue)" opacity="0.8"/>
+        <circle cx="145" cy="130" r="42" fill="url(#gradBlue)" opacity="0.8"/>
+        <circle cx="100" cy="150" r="38" fill="url(#gradBlue)" opacity="0.9"/>
+        <circle cx="100" cy="100" r="18" fill="#B3E5FC" opacity="0.6"/>
+    </svg>
+
+    <!-- Смешанный маленький цветок (Справа сверху) -->
+    <svg class="flower-bg flower-mix-1" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" style="--r: 10deg">
+         <defs>
+            <radialGradient id="gradMix" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:#FFF3E0;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FFCCBC;stop-opacity:0.7" />
+            </radialGradient>
+        </defs>
+        <circle cx="75" cy="75" r="30" fill="url(#gradMix)" opacity="0.8"/>
+        <circle cx="50" cy="60" r="25" fill="url(#gradMix)" opacity="0.7"/>
+        <circle cx="100" cy="60" r="25" fill="url(#gradMix)" opacity="0.7"/>
+        <circle cx="50" cy="100" r="28" fill="url(#gradMix)" opacity="0.7"/>
+        <circle cx="100" cy="100" r="28" fill="url(#gradMix)" opacity="0.7"/>
+    </svg>
+
+    <div class="container">
+        <!-- Летающие лепестки (генерируются JS или статично) -->
+        <div class="petal" style="background: #CE93D8; left: 10%; animation-duration: 10s; animation-delay: 0s;"></div>
+        <div class="petal" style="background: #81D4FA; left: 80%; animation-duration: 12s; animation-delay: 2s;"></div>
+        <div class="petal" style="background: #FFB7C5; left: 40%; animation-duration: 9s; animation-delay: 4s;"></div>
+        <div class="petal" style="background: #E1BEE7; left: 60%; animation-duration: 11s; animation-delay: 1s;"></div>
+
+        <!-- Заголовок -->
+        <h1>Доброе утро, Анна! ☀️</h1>
+        <p class="subtitle">Твой личный сад красоты и гармонии</p>
+
+        <!-- Приветственная карточка -->
+        <div class="welcome-card">
+            <p class="welcome-text">
+                Сегодня прекрасный день, чтобы позаботиться о себе. <br>
+                Твоя цель: <span class="highlight">выпить 2 литра воды</span> и сделать <span class="highlight">легкую растяжку</span>.
+            </p>
+        </div>
+
+        <!-- Виджеты -->
+        <div class="grid">
+            <div class="widget">
+                <span class="widget-icon">💧</span>
+                <h3 class="widget-title">Вода</h3>
+                <p class="widget-value">4 из 8 стаканов</p>
+            </div>
+            <div class="widget">
+                <span class="widget-icon">🧘‍♀️</span>
+                <h3 class="widget-title">Спорт</h3>
+                <p class="widget-value">Не было сегодня</p>
+            </div>
+            <div class="widget">
+                <span class="widget-icon">⚖️</span>
+                <h3 class="widget-title">Вес</h3>
+                <p class="widget-value">54.2 кг</p>
+            </div>
+            <div class="widget">
+                <span class="widget-icon">📸</span>
+                <h3 class="widget-title">Фото</h3>
+                <p class="widget-value">Добавить</p>
+            </div>
+        </div>
+
+        <!-- Главная кнопка -->
+        <a href="#" class="action-btn">✨ Начать тренировку сейчас</a>
+
+        <!-- Прогресс -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Твой прогресс за неделю</span>
+                <span>65%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="font-size: 0.85rem; color: #9988A5; margin-top: 12px; text-align: center;">
+                Ты молодец! Еще немного до полной победы 🌸
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Небольшой скрипт для генерации дополнительных лепестков при загрузке
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            // Случайный цвет из нашей палитры
+            const colors = ['#CE93D8', '#81D4FA', '#FFB7C5', '#E1BEE7'];
+            petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Случайная позиция по горизонтали
+            petal.style.left = Math.random() * 100 + '%';
+            
+            // Случайная длительность анимации
+            petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            
+            document.body.appendChild(petal);
+            
+            // Удаляем лепесток после завершения анимации, чтобы не засорять память
+            setTimeout(() => {
+                petal.remove();
+            }, 13000);
+        }
+
+        // Создаем новый лепесток каждые 2 секунды
+        setInterval(createPetal, 2000);
+    </script>
+</body>
+</html>
