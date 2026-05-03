@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+import os  
 from datetime import datetime, date, timedelta
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
